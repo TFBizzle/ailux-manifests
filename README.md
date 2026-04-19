@@ -12,8 +12,11 @@ This repo holds **signed manifest.json** files for the AILux update daemon.
 
 Manifests are short-lived JSON pointers (versions, SHAs, image digests) that
 must be fetchable by every customer's update daemon. They contain no secrets.
-Each manifest is signed with the AILux release private key (held offline by
-the maintainer). The daemon refuses any manifest with an invalid signature.
+Each manifest is signed with the AILux release private key (held by the
+maintainer and never stored in CI or on shared infrastructure). The daemon
+refuses any manifest with an invalid signature. Each manifest also pins the
+sandbox container image by SHA256 digest, so the tag cannot be silently
+re-pointed after a release ships.
 
 Publishing here does NOT publish source code. Source code lives in
 `TFBizzle/ailux-platform` and stays private.
@@ -25,6 +28,6 @@ broken release, publish a new version.
 
 ## How releases are published
 
-By the maintainer, locally, via `tools/release-local.ps1` in the
-`ailux-platform` repo. The signing key never leaves the maintainer's machine.
-No GitHub Actions secrets, no automation.
+Releases will be published by the maintainer, locally, via
+`tools/release-local.ps1` in the `ailux-platform` repo. The signing key never
+leaves the maintainer's machine. No GitHub Actions secrets, no automation.
